@@ -1,0 +1,906 @@
+/* ========================================================= */
+/* =============== 1) GLOBAL / SHARED LAYOUT =============== */
+/* ========================================================= */
+
+/* ===== MAIN BACKGROUND + CENTERING (MOST PAGES) ===== */
+.promo-body {
+    margin: 0; /* removes default space around the page */
+    padding: 0; /* removes default inner space */
+    font-family: "Segoe UI", sans-serif; /* main font */
+
+    background: linear-gradient(to bottom, #2f5d3a, #1f3d2b); /* green background */
+    min-height: 100vh; /* full screen height */
+
+    display: flex; /* allows centering */
+    justify-content: center; /* centers left to right */
+    align-items: center; /* centers top to bottom */
+
+    padding-left: 190px; /* space for sidebar */
+}
+
+/* ===== WHITE BOX USED ON MANY PAGES ===== */
+.promo-box {
+    background-color: #f7f7f4; /* light white / cream */
+    width: 70%; /* box width */
+    max-width: 800px; /* max width */
+    padding: 30px; /* inside space */
+    border-radius: 15px; /* rounded corners */
+    text-align: center; /* centers text */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* shadow */
+}
+
+/* ===== TITLES INSIDE promo-box ===== */
+.promo-box h2 {
+    color: #8b0000; /* dark red */
+    margin-bottom: 20px; /* space under title */
+    margin-top: 20px; /* space above (helps for draw results too) */
+}
+
+/* ===== PARAGRAPHS INSIDE promo-box ===== */
+.promo-box p {
+    color: #000000; /* black text */
+    font-size: 15px; /* readable size */
+    line-height: 1.6; /* line spacing */
+    margin: 10px 0; /* space around paragraphs */
+}
+
+/* ===== RED BUTTON USED ON MANY PAGES ===== */
+.promo-submit {
+    width: 100%; /* full width */
+    padding: 14px; /* height */
+    margin-top: 10px; /* space above */
+    border: none; /* no border */
+    border-radius: 10px; /* rounded corners */
+    background-color: #a23a2e; /* christmas red */
+    color: #ffffff; /* white text */
+    font-size: 16px; /* text size */
+    font-weight: bold; /* bold */
+    cursor: pointer; /* hand cursor */
+}
+
+/* ===== BUTTON HOVER ===== */
+.promo-submit:hover {
+    background-color: #8f3228; /* darker red */
+}
+
+/* ===== SUBTITLE TEXT (USED ON ACTION PAGE) ===== */
+.subtitle {
+    margin-top: 5px; /* small space above */
+    margin-bottom: 25px; /* space below */
+    font-size: 16px; /* subtitle size */
+    font-weight: normal; /* not too bold */
+    color: #333333; /* dark gray */
+}
+
+/* ===== FORM GROUPS (ACTION / INVITE / AGREE) ===== */
+.promo-group {
+    text-align: left; /* labels and inputs left */
+    margin-bottom: 15px; /* space between rows */
+}
+
+.promo-group label {
+    display: block; /* label on its own line */
+    font-size: 15px; /* label size */
+    font-weight: bold; /* bold */
+    margin-bottom: 6px; /* space under label */
+    color: #000000; /* black */
+}
+
+.promo-group input {
+    width: 100%; /* full width */
+    padding: 12px; /* inside space */
+    border: 1px solid #cfcfcf; /* light border */
+    border-radius: 8px; /* rounded corners */
+    font-size: 16px; /* input text size */
+    box-sizing: border-box; /* keeps width correct */
+    outline: none; /* removes blue outline */
+}
+
+.promo-group input:focus {
+    border-color: #a23a2e; /* red border on click */
+}
+
+/* ===== FOOTER TEXT (INSIDE WHITE BOXES) ===== */
+.footer-text {
+    margin-top: 12px; /* space above */
+    font-size: 12px; /* small text */
+    color: #555555; /* soft gray */
+    text-align: center; /* centered text */
+}
+
+/* ========================================================= */
+/* ================= 2) NAVBAR / SIDEBAR =================== */
+/* ========================================================= */
+
+.sidebar {
+    position: fixed; /* stuck on the left */
+    top: 0; /* top of screen */
+    left: 0; /* left side */
+    width: 190px; /* sidebar width */
+    height: 100vh; /* full screen height */
+    background-color: #a23a2e; /* red background */
+    padding-top: 30px; /* space at top */
+    z-index: 10; /* above page */
+}
+
+.sidebar ul {
+    list-style: none; /* removes bullets */
+    padding: 0; /* removes padding */
+    margin: 0; /* removes margin */
+}
+
+.sidebar li {
+    margin-bottom: 18px; /* space between links */
+}
+
+.sidebar a {
+    display: block; /* full clickable line */
+    padding: 8px 20px; /* inside spacing */
+    color: white; /* white text */
+    text-decoration: none; /* no underline */
+    font-size: 16px; /* readable size */
+    font-weight: bold; /* bold */
+}
+
+.sidebar a:hover {
+    background-color: #8f3228; /* hover darker red */
+}
+
+/* ========================================================= */
+/* ===================== 3) LOGIN PAGE ===================== */
+/* ========================================================= */
+
+.login-box {
+    background-color: #ffffff; /* white background */
+    width: 360px; /* width */
+    max-width: 90%; /* fits mobile */
+    padding: 40px 35px 30px 35px; /* inside space */
+    border-radius: 15px; /* rounded */
+    text-align: center; /* center text */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* shadow */
+    position: relative; /* needed for icon placement */
+    z-index: 2; /* above snow */
+}
+
+.login-icon {
+    width: 70px; /* circle size */
+    height: 70px; /* circle size */
+    background-color: white; /* circle color */
+    border-radius: 50%; /* makes it round */
+    margin: -75px auto 10px auto; /* moves it above box */
+    display: flex; /* centers emoji */
+    align-items: center; /* center vertically */
+    justify-content: center; /* center horizontally */
+    font-size: 32px; /* emoji size */
+}
+
+.login-title {
+    color: #8b0000; /* red */
+    font-size: 22px; /* bold title */
+    font-weight: bold; /* bold */
+    margin-bottom: 20px; /* space under */
+}
+
+.login-input-group {
+    margin-bottom: 15px; /* space between inputs */
+}
+
+.login-input-group input {
+    width: 100%; /* full width */
+    padding: 12px; /* inside space */
+    border: 1px solid #cccccc; /* border */
+    border-radius: 8px; /* rounded */
+    font-size: 16px; /* text size */
+    box-sizing: border-box; /* correct sizing */
+}
+
+.login-button {
+    width: 100%; /* full width */
+    padding: 12px; /* button height */
+    background-color: #a23a2e; /* red */
+    color: white; /* white text */
+    border: none; /* no border */
+    border-radius: 8px; /* rounded */
+    font-size: 16px; /* input text */
+    font-weight: bold; /* bold */
+    cursor: pointer; /* hand cursor */
+}
+
+.login-button:hover {
+    background-color: #8f3228; /* darker red */
+}
+
+.login-footer-text {
+    margin-top: 15px; /* space above */
+    font-size: 13px; /* smaller text */
+    color: #333333; /* dark gray */
+}
+
+/* ========================================================= */
+/* ===================== 4) HOME PAGE ====================== */
+/* ========================================================= */
+
+.home-body {
+    margin: 0; /* removes default space */
+    padding: 0; /* removes default padding */
+    font-family: "Segoe UI", sans-serif; /* same font */
+
+    background: linear-gradient(to bottom, #2f5d3a, #1f3d2b); /* green background */
+    min-height: 100vh; /* full height */
+
+    display: flex; /* center card */
+    justify-content: center; /* center horizontally */
+    align-items: center; /* center vertically */
+
+    padding-left: 190px; /* space for sidebar */
+}
+
+.north-pole-card {
+    background-color: #f7f7f4; /* soft white */
+    width: 70%; /* width */
+    max-width: 800px; /* max width */
+    padding: 50px 30px; /* inside space */
+    border-radius: 15px; /* rounded */
+    text-align: center; /* center text */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* shadow */
+    position: relative; /* for decorations */
+}
+
+.festive-lights {
+    height: 10px; /* bar height */
+    width: 100%; /* full width */
+    border-radius: 10px; /* rounded ends */
+    margin-bottom: 25px; /* space under bar */
+    background: repeating-linear-gradient(
+            to right,
+            #a23a2e 0px,
+            #a23a2e 18px,
+            #2f5d3a 18px,
+            #2f5d3a 36px
+    ); /* red-green pattern */
+}
+
+.home-title {
+    margin: 0; /* remove default margin */
+    color: #8b0000; /* red */
+    font-size: 34px; /* big text */
+    font-weight: bold; /* bold */
+}
+
+.home-subtitle {
+    margin-top: 10px; /* space above */
+    margin-bottom: 25px; /* space below */
+    font-size: 16px; /* size */
+    color: #333333; /* gray */
+}
+
+.ornament-row {
+    margin-bottom: 25px; /* space under ornaments */
+}
+
+.ornament {
+    font-size: 26px; /* emoji size */
+    margin: 0 6px; /* space between emojis */
+}
+
+.magic-button {
+    padding: 12px 25px; /* size */
+    border: none; /* no border */
+    border-radius: 10px; /* rounded */
+    background-color: #a23a2e; /* red */
+    color: white; /* white text */
+    font-size: 16px; /* text size */
+    font-weight: bold; /* bold */
+    cursor: pointer; /* hand cursor */
+}
+
+.magic-button:hover {
+    background-color: #8f3228; /* darker red */
+}
+
+.home-footer {
+    margin-top: 30px; /* space above */
+    font-size: 12px; /* small text */
+    color: #555555; /* soft gray */
+}
+
+/* ===== REINDEER IMAGE (USED ON HOME / ABOUT IF YOU REUSE IT) ===== */
+.picture-about {
+    width: 100%; /* image fits container */
+    max-width: 800px; /* max size */
+    height: auto; /* keeps proportion */
+    display: block; /* allows centering */
+    margin: 25px auto; /* centers image */
+    border-radius: 10px; /* rounded corners */
+}
+
+/* ========================================================= */
+/* ===================== 5) DRAW PAGE ====================== */
+/* ========================================================= */
+
+.promo-box table {
+    width: 100%; /* full width */
+    border-collapse: collapse; /* clean borders */
+    margin-top: 15px; /* space above */
+    font-size: 14px; /* text size */
+}
+
+.promo-box th {
+    background-color: #a23a2e; /* red header */
+    color: white; /* white text */
+    padding: 10px; /* inside space */
+    text-align: left; /* left aligned */
+}
+
+.promo-box td {
+    padding: 10px; /* inside space */
+    border: 1px solid #dddddd; /* light border */
+    text-align: left; /* left aligned */
+}
+
+.promo-box tr:nth-child(even) {
+    background-color: #f2f2f2; /* striped rows */
+}
+
+.promo-box hr {
+    border: none; /* remove default */
+    height: 1px; /* thin line */
+    background-color: #dddddd; /* gray line */
+    margin: 20px 0; /* space around */
+}
+
+.promo-box p strong {
+    color: #8b0000; /* giver name in red */
+}
+
+/* ========================================================= */
+/* ===================== 6) AGREE PAGE ===================== */
+/* ========================================================= */
+
+.agree-buttons {
+    display: flex; /* buttons next to each other */
+    gap: 10px; /* space between them */
+    margin-top: 10px; /* space above */
+}
+
+.agree-buttons .promo-submit {
+    width: 100%; /* both same size */
+}
+
+.message-ok {
+    margin-top: 15px; /* space above */
+    color: #000000; /* black */
+    font-weight: bold; /* bold */
+}
+
+.message-bad {
+    margin-top: 15px; /* space above */
+    color: #a23a2e; /* red */
+    font-weight: bold; /* bold */
+}
+
+/* ========================================================= */
+/* =================== 7) DISAGREE PAGE ==================== */
+/* ========================================================= */
+
+.disagree-body {
+    margin: 0; /* no margin */
+    padding: 0; /* no padding */
+    font-family: "Segoe UI", sans-serif; /* font */
+
+    background: linear-gradient(to bottom, #2f5d3a, #1f3d2b); /* green */
+    min-height: 100vh; /* full height */
+
+    display: flex; /* center content */
+    justify-content: center; /* center horizontally */
+    align-items: center; /* center vertically */
+
+    padding-left: 190px; /* space for sidebar */
+}
+
+.disagree-box {
+    background-color: #f7f7f4; /* white box */
+    width: 400px; /* width */
+    max-width: 90%; /* mobile */
+    padding: 30px; /* inside space */
+    border-radius: 15px; /* rounded corners */
+    text-align: center; /* center text */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* shadow */
+}
+
+.disagree-title {
+    color: #8b0000; /* red */
+    font-size: 22px; /* title size */
+    margin-bottom: 20px; /* space under title */
+}
+
+.disagree-group {
+    text-align: left; /* align form left */
+    margin-bottom: 15px; /* space under */
+}
+
+.disagree-group label {
+    display: block; /* label on own line */
+    font-weight: bold; /* bold */
+    margin-bottom: 6px; /* space under label */
+    color: #000000; /* black */
+}
+
+.disagree-group input {
+    width: 100%; /* full width */
+    padding: 12px; /* inside space */
+    border-radius: 8px; /* rounded */
+    border: 1px solid #cccccc; /* border */
+    font-size: 15px; /* text size */
+    box-sizing: border-box; /* correct sizing */
+}
+
+.disagree-button {
+    width: 100%; /* full width */
+    padding: 14px; /* height */
+    margin-top: 10px; /* space above */
+    background-color: #8b0000; /* dark red */
+    color: white; /* white text */
+    border: none; /* no border */
+    border-radius: 10px; /* rounded */
+    font-size: 16px; /* size */
+    font-weight: bold; /* bold */
+    cursor: pointer; /* hand cursor */
+}
+
+.disagree-button:hover {
+    background-color: #6f0000; /* darker red */
+}
+
+.disagree-message {
+    margin-top: 15px; /* space above */
+    font-weight: bold; /* bold */
+    color: #000000; /* black */
+}
+
+.disagree-error {
+    margin-top: 15px; /* space above */
+    font-weight: bold; /* bold */
+    color: #a23a2e; /* red */
+}
+
+/* ========================================================= */
+/* ================== 8) SNOWFLAKES (ALL PAGES) ============ */
+/* ========================================================= */
+
+.snow {
+    position: fixed; /* snow stays on screen */
+    top: -20px; /* starts above screen */
+    color: white; /* snow color */
+    opacity: 0.8; /* slightly transparent */
+    pointer-events: none; /* you can click through it */
+    animation-name: snowFall; /* animation name */
+    animation-timing-function: linear; /* smooth fall */
+    animation-iteration-count: 1; /* falls once */
+    z-index: 9999; /* above everything */
+}
+
+@keyframes snowFall {
+    from { transform: translateY(0); } /* start position */
+    to { transform: translateY(110vh); } /* end position */
+}
+
+
+/* ===================================================================== */
+/* ================== 9) FOOTER FIXED AT BOTTOM OF SCREEN  ============= */
+/* ===================================================================== */
+
+
+#footerindex {
+    position: fixed; /* stays on screen */
+    bottom: 0; /* bottom */
+    left: 985px; /* starts after sidebar */
+    width: calc(100% - 190px); /* full width next to sidebar */
+
+    text-align: center; /* centers text */
+    padding: 8px; /* space inside */
+    font-size: 13px; /* text size */
+    color: #000000; /* black text */
+}
+
+/* ========================================================= */
+/* ================= ADMIN OVERVIEW PAGE ==================== */
+/* ========================================================= */
+
+/* Fix the body because promo-body normally leaves space
+   for a sidebar that is not shown on this page */
+body.promo-body.admin-overview-page {
+    padding: 100px 20px 50px 20px;
+    box-sizing: border-box;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    overflow-x: hidden;
+}
+
+/* Make box-sizing predictable inside the admin page */
+.admin-overview-page .admin-container,
+.admin-overview-page .admin-container * {
+    box-sizing: border-box;
+}
+
+/* Main white admin box */
+.admin-overview-page .admin-container {
+    width: 90%;
+    max-width: 900px;
+
+    padding: 45px 35px 35px 35px;
+
+    position: relative;
+    text-align: center;
+}
+
+/* ========================================================= */
+/* ===================== ADMIN HEADER ======================= */
+/* ========================================================= */
+
+.admin-overview-page .admin-header {
+    padding-bottom: 28px;
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Santa icon above the box */
+.admin-overview-page .admin-header .login-icon {
+    width: 76px;
+    height: 76px;
+
+    margin: -84px auto 15px auto;
+
+    font-size: 34px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Admin title */
+.admin-overview-page .admin-header .login-title {
+    margin: 0 0 15px 0;
+
+    color: #8b0000;
+    font-size: 27px;
+}
+
+/* Header text */
+.admin-overview-page .admin-header p {
+    margin: 8px 0;
+
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.admin-overview-page .admin-message {
+    color: #333333;
+}
+
+/* ========================================================= */
+/* ===================== ADMIN BUTTONS ====================== */
+/* ========================================================= */
+
+.admin-overview-page .admin-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.admin-overview-page .admin-buttons form {
+    margin: 0;
+}
+
+/* Dashboard and logout buttons */
+.admin-overview-page .dashboard-button,
+.admin-overview-page .logout-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 130px;
+    min-height: 42px;
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #a23a2e;
+    color: #ffffff;
+
+    font-family: "Segoe UI", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+/* Button hover */
+.admin-overview-page .dashboard-button:hover,
+.admin-overview-page .logout-button:hover {
+    background-color: #8f3228;
+}
+
+/* ========================================================= */
+/* =================== ACTIONS OVERVIEW ===================== */
+/* ========================================================= */
+
+.admin-overview-page .actions-overview {
+    margin-top: 30px;
+}
+
+/* Heading area */
+.admin-overview-page .overview-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+
+    margin-bottom: 22px;
+
+    text-align: left;
+}
+
+/* Actions Overview title */
+.admin-overview-page .overview-title h2 {
+    margin: 0 0 7px 0;
+
+    color: #8b0000;
+    font-size: 25px;
+}
+
+/* Description under title */
+.admin-overview-page .overview-title p {
+    margin: 0;
+
+    color: #333333;
+    font-size: 15px;
+}
+
+/* Number of actions */
+.admin-overview-page .action-count {
+    flex-shrink: 0;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background-color: #2f5d3a;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ========================================================= */
+/* ====================== ACTION GRID ======================= */
+/* ========================================================= */
+
+.admin-overview-page .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Single action card */
+.admin-overview-page .action-card {
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.08);
+
+    text-align: left;
+}
+
+/* Card title and status */
+.admin-overview-page .action-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.admin-overview-page .action-card-header h3 {
+    margin: 0;
+
+    color: #8b0000;
+    font-size: 20px;
+
+    overflow-wrap: anywhere;
+}
+
+/* Status badge */
+.admin-overview-page .status-badge {
+    flex-shrink: 0;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background-color: #e5eee7;
+    color: #1f3d2b;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ========================================================= */
+/* ================= ACTION INFORMATION ===================== */
+/* ========================================================= */
+
+.admin-overview-page .action-information {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+/* One information box */
+.admin-overview-page .action-detail {
+    padding: 10px;
+
+    border-radius: 8px;
+
+    background-color: #f7f7f4;
+}
+
+/* Information name */
+.admin-overview-page .detail-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #666666;
+
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Information value */
+.admin-overview-page .detail-value {
+    display: block;
+
+    color: #000000;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    overflow-wrap: anywhere;
+}
+
+/* ========================================================= */
+/* ===================== DELETE BUTTON ====================== */
+/* ========================================================= */
+
+.admin-overview-page .delete-form {
+    margin-top: auto;
+}
+
+.admin-overview-page .delete-button {
+    width: 100%;
+    padding: 11px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #a23a2e;
+    color: #ffffff;
+
+    font-family: "Segoe UI", sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.admin-overview-page .delete-button:hover {
+    background-color: #8f3228;
+}
+
+/* ========================================================= */
+/* ===================== NO ACTIONS BOX ===================== */
+/* ========================================================= */
+
+.admin-overview-page .empty-actions {
+    padding: 35px 20px;
+
+    border: 1px dashed #cccccc;
+    border-radius: 12px;
+
+    background-color: #ffffff;
+
+    text-align: center;
+}
+
+.admin-overview-page .empty-icon {
+    margin-bottom: 10px;
+
+    font-size: 38px;
+}
+
+.admin-overview-page .empty-actions h3 {
+    margin: 0 0 10px 0;
+
+    color: #8b0000;
+    font-size: 21px;
+}
+
+.admin-overview-page .empty-actions p {
+    margin: 0;
+
+    color: #333333;
+    font-size: 15px;
+}
+
+/* ========================================================= */
+/* ================= RESPONSIVE DESIGN ====================== */
+/* ========================================================= */
+
+@media (max-width: 850px) {
+
+    body.promo-body.admin-overview-page {
+        padding: 90px 20px 40px 20px;
+    }
+
+    .admin-overview-page .admin-container {
+        width: 100%;
+    }
+
+    .admin-overview-page .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+
+    body.promo-body.admin-overview-page {
+        padding: 85px 12px 30px 12px;
+    }
+
+    .admin-overview-page .admin-container {
+        padding: 40px 18px 25px 18px;
+    }
+
+    .admin-overview-page .admin-header .login-title {
+        font-size: 23px;
+    }
+
+    .admin-overview-page .admin-buttons {
+        flex-direction: column;
+    }
+
+    .admin-overview-page .admin-buttons form,
+    .admin-overview-page .dashboard-button,
+    .admin-overview-page .logout-button {
+        width: 100%;
+    }
+
+    .admin-overview-page .overview-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-overview-page .action-information {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-overview-page .action-card-header {
+        flex-direction: column;
+    }
+}
