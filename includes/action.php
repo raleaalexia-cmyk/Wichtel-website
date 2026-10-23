@@ -167,7 +167,7 @@ if (isset(
         mysqli_close($dbc);
 
         // Email the login code to the Head Elf.
-        emailSent(
+        $emailResult = emailSent(
                 "Head Elf invitation",
                 "
             <h2>Willkommen zum Wichteln</h2>
@@ -186,9 +186,15 @@ if (isset(
         deleteCookie("DATA_end");
         deleteCookie("DATA_value");
 
-        // Clear errors and create a success message.
+        // Clear errors and show whether email delivery succeeded.
         $error = "";
-        $success = "✅ Action successfully created! Check your email for the login code.";
+        if ($emailResult === true) {
+            $success = "✅ Action successfully created! Check your email for the login code.";
+        } else {
+            // Show the code to the creator as a fallback if SMTP isn't configured.
+            $safeCode = htmlspecialchars($randomNumber, ENT_QUOTES, 'UTF-8');
+            $success = "✅ Action created, but the email could not be sent. Your login code is: <strong>" . $safeCode . "</strong>. Configure SMTP to enable email delivery.";
+        }
     }
 }
 ?>
