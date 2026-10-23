@@ -168,9 +168,12 @@ mysqli_close($dbc);
 $financial = isset($financialRows[0]) ? $financialRows[0] : null;
 $participation = isset($participationRows[0]) ? $participationRows[0] : null;
 
-$activeAction = $statusValue($actions, "Active", "percent");
+// The schema uses Started, ReadyForDraw and Drawn for active actions.
+$activeAction = $statusValue($actions, "Started", "percent")
+    + $statusValue($actions, "ReadyForDraw", "percent")
+    + $statusValue($actions, "Drawn", "percent");
 $closedAction = $statusValue($actions, "Closed", "percent");
-$actionSecond = $activeAction + $closedAction;
+$actionSecond = min(100, $activeAction + $closedAction);
 
 $suspendedElf = $statusValue($elves, "Suspended", "percent");
 $activeElf = $statusValue($elves, "Active", "percent");
