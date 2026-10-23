@@ -225,7 +225,7 @@ if (isset($_SESSION["HeadElf"])) {
                                 // Use the current host and folder for the login link in the email.
                                 $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"] ?? "/index.php"), "/\\");
                                 $loginLink = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off" ? "https://" : "http://")
-                                    . ($_SERVER["HTTP_HOST"] ?? "localhost")
+                                    . ($_SERVER["HTTP_HOST"] ?? "")
                                     . $basePath
                                     . "/index.php?page=userLogin";
 
