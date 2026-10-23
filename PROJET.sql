@@ -1,22 +1,12 @@
 -- =============================================================
 -- WSERS2 - Secret Santa : Dashboard SQL Queries (DQL)
 -- =============================================================
--- ⚠️  IMPORTANT – Two columns are missing from your schema.
---     Run these ALTER TABLE statements once before using the
---     queries below, otherwise the status-based SELECTs won't work.
---
---   ALTER TABLE Action
---     ADD COLUMN status VARCHAR(30) NOT NULL DEFAULT 'Draft';
---
---   ALTER TABLE Elf
---     ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'New';
---
--- Allowed values
---   Action.status : 'Draft' | 'Started' | 'Ready for the Draw'
---                   | 'Drawn' | 'Closed' | 'Cancelled'
---   Elf.status    : 'New' | 'Active' | 'Suspended' | 'Unsubscribed'
---   Invite.status : 'Added to List' | 'Invited' | 'Accepted'
---                   | 'Declined' | 'Cancelled'
+-- Status columns already exist in CREATE_TABLES+SYSM.sql.
+-- Action.actionStatus : 'Draft' | 'Started' | 'ReadyForDraw'
+--                       | 'Drawn' | 'Closed' | 'Cancelled'
+-- Elf.elfStatus        : 'New' | 'Active' | 'Suspended' | 'Unsubscribed'
+-- Invite.status        : 'AddedToList' | 'Invited' | 'Accepted'
+--                       | 'Declined' | 'Cancelled'
 -- =============================================================
 
 
@@ -25,11 +15,11 @@
 --     Shows the percentage breakdown of all action statuses.
 -- -------------------------------------------------------------
 SELECT
-    status,
+    actionStatus AS status,
     COUNT(*)                                                       AS total,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Action), 2)    AS percentage
+    ROUND(COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM Action), 0), 2) AS percentage
 FROM   Action
-GROUP  BY status
+GROUP  BY actionStatus
 ORDER  BY total DESC;
 
 
@@ -38,11 +28,11 @@ ORDER  BY total DESC;
 --     Shows the percentage breakdown of all elf statuses.
 -- -------------------------------------------------------------
 SELECT
-    status,
+    elfStatus AS status,
     COUNT(*)                                                    AS total,
-    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Elf), 2)    AS percentage
+    ROUND(COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM Elf), 0), 2) AS percentage
 FROM   Elf
-GROUP  BY status
+GROUP  BY elfStatus
 ORDER  BY total DESC;
 
 
