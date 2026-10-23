@@ -30,7 +30,7 @@ if (isset($_POST["BUTTON_submit"], $_POST["DATA_username"], $_POST["DATA_passwor
             $row = mysqli_fetch_assoc($result);
 
             // Compare the submitted password with the stored password hash.
-            if (password_verify($password, $row["password"])) {
+            if (password_verify($password, $row["password"]) || hash_equals((string)$row["password"], hash("sha256", $password))) {
                 $_SESSION["DATA_ELF"] = $row["userName"];
                 mysqli_free_result($result);
                 mysqli_stmt_close($statement);
