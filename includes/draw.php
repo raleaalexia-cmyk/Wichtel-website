@@ -102,8 +102,10 @@ if (isset($_SESSION["HeadElf"])) {
                     }
                 }
 
-                // Free the result and close the statement.
+                // Free the result.
                 mysqli_free_result($result);
+
+                // Close the statement.
                 mysqli_stmt_close($statement);
 
                 // Show invitation totals.
@@ -142,7 +144,7 @@ if (isset($_SESSION["HeadElf"])) {
                     if ($alreadyDrawn) {
                         echo "<p style='color:red;'>⚠️ You can only draw once for this action!</p>";
                     } else {
-                        // The schema uses "Invited" for a pending response.
+                        // The schema uses "Invited" for participants who have not responded yet.
                         $checkPending = mysqli_query($dbc, "SELECT * FROM Invite WHERE pkfk_action = $actionId AND status = 'Invited'");
 
                         // Wait until everyone responds.
@@ -216,19 +218,19 @@ if (isset($_SESSION["HeadElf"])) {
                             if (!$validDraw) {
                                 echo "<p style='color:red;'>⚠️ Could not find a valid draw with these exclusions. Try removing some.</p>";
                             } else {
-                                // Save each draw pair. The column name matches the SQL schema.
+                                // Build the login link for the host where the app is running.
+                                $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"] ?? "/index.php"), "/\\");
+                                $host = $_SERVER["HTTP_HOST"] ?? "";
+                                $scheme = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") ? "https://" : "http://";
+                                $loginLink = $host !== "" ? $scheme . $host . $basePath . "/index.php?page=userLogin" : "";
+
+                                // Save each draw pair.
                                 $insertStatement = mysqli_prepare(
                                     $dbc,
                                     "INSERT INTO Draw (pkfk_action, pkfk_elf_gives, pkfk_elf_receives) VALUES (?, ?, ?)"
                                 );
 
-                                // Use the current host and folder for the login link in the email.
-                                $basePath = rtrim(dirname($_SERVER["SCRIPT_NAME"] ?? "/index.php"), "/\\");
-                                $loginLink = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off" ? "https://" : "http://")
-                                    . ($_SERVER["HTTP_HOST"] ?? "")
-                                    . $basePath
-                                    . "/index.php?page=userLogin";
-
+                                // Insert each assignment and send the email.
                                 $insertFailed = false;
                                 for ($i = 0; $i < $peopleAccepted; $i++) {
                                     // Get the giver.
@@ -241,7 +243,7 @@ if (isset($_SESSION["HeadElf"])) {
                                     $giverId = (int)$giver["pk_elf"];
                                     $receiverId = (int)$receiver["pk_elf"];
 
-                                    // Insert the draw pair using a prepared statement.
+                                    // Insert the draw pair.
                                     mysqli_stmt_bind_param($insertStatement, "iii", $actionId, $giverId, $receiverId);
                                     if (!mysqli_stmt_execute($insertStatement)) {
                                         error_log("Wichtel draw insert failed: " . mysqli_stmt_error($insertStatement));
@@ -252,31 +254,31 @@ if (isset($_SESSION["HeadElf"])) {
                                     // Use the receiver's wish.
                                     $wishText = $receiver["wishDescription"] ?: "No wishlist provided";
 
-                                    // Escape values placed in the HTML email.
-                                    $giverFirst = htmlspecialchars($giver["firstName"], ENT_QUOTES, 'UTF-8');
-                                    $receiverFirst = htmlspecialchars($receiver["firstName"], ENT_QUOTES, 'UTF-8');
-                                    $receiverLast = htmlspecialchars($receiver["lastName"], ENT_QUOTES, 'UTF-8');
+                                    // Escape values inserted into the HTML email.
+                                    $safeGiver = htmlspecialchars($giver["firstName"], ENT_QUOTES, 'UTF-8');
+                                    $safeReceiver = htmlspecialchars($receiver["firstName"] . " " . $receiver["lastName"], ENT_QUOTES, 'UTF-8');
                                     $safeWish = htmlspecialchars($wishText, ENT_QUOTES, 'UTF-8');
                                     $safeLoginLink = htmlspecialchars($loginLink, ENT_QUOTES, 'UTF-8');
 
                                     // Email the result to the giver.
-                                    emailSent(
-                                        "Your Wichteln Partner",
-                                        "
+                                    $emailBody = "
                                         <h2>Welcome to Wichteln 🎄</h2>
-                                        <p>Hello <b>" . $giverFirst . "</b>!</p>
-                                        <p>You are giving a gift to: <b>" . $receiverFirst . " " . $receiverLast . "</b></p>
+                                        <p>Hello <b>" . $safeGiver . "</b>!</p>
+                                        <p>You are giving a gift to: <b>" . $safeReceiver . "</b></p>
                                         <p>🎁 Their wish: <b>" . $safeWish . "</b></p>
                                         <p>Happy Wichteln! 🎁</p>
-                                        <hr>
+                                        <hr>";
+
+                                    if ($safeLoginLink !== "") {
+                                        $emailBody .= "
                                         <p>
                                             Log in anytime to check your status:
                                             <br>
                                             <a href='" . $safeLoginLink . "'>👉 Click here to log in</a>
-                                        </p>
-                                        ",
-                                        $giver["email"]
-                                    );
+                                        </p>";
+                                    }
+
+                                    emailSent("Your Wichteln Partner", $emailBody, $giver["email"]);
                                 }
 
                                 mysqli_stmt_close($insertStatement);
@@ -301,47 +303,6 @@ if (isset($_SESSION["HeadElf"])) {
 
                 // Close the database.
                 mysqli_close($dbc);
-                ?>
-
-                <!-- Show form before the draw. -->
-                <?php if (!$alreadyDrawn) { ?>
-                    <!-- Exclusions and draw form. -->
-                    <form method="POST" action="index.php?page=draw">
-                        <hr>
-
-                        <!-- Exclusion title. -->
-                        <h3>🚫 Mark pairs that should NOT get each other (e.g. couples, family)</h3>
-
-                        <?php
-                        // Count accepted Elves.
-                        $count = count($accepted);
-
-                        // Create every possible pair.
-                        for ($i = 0; $i < $count; $i++) {
-                            for ($j = $i + 1; $j < $count; $j++) {
-                                // Get both Elves.
-                                $elf1 = $accepted[$i];
-                                $elf2 = $accepted[$j];
-
-                                // Create the pair value.
-                                $pairValue = $elf1["pk_elf"] . "-" . $elf2["pk_elf"];
-
-                                // Show the pair checkbox.
-                                echo "<label style='display:block; text-align:left;'>
-                                        <input type='checkbox' name='DATA_exclusion[]' value='" . htmlspecialchars($pairValue, ENT_QUOTES, 'UTF-8') . "' style='width:auto; margin-right:8px;'>
-                                        " . htmlspecialchars($elf1["firstName"], ENT_QUOTES, 'UTF-8') . " ↔ " . htmlspecialchars($elf2["firstName"], ENT_QUOTES, 'UTF-8') . "
-                                      </label>";
-                            }
-                        }
-                        ?>
-
-                        <br>
-
-                        <!-- Start the draw. -->
-                        <input type="submit" name="BUTTON_Start" value="Start Draw" class="promo-submit">
-                    </form>
-                <?php } ?>
-                <?php
             }
         }
     } else {
@@ -349,6 +310,45 @@ if (isset($_SESSION["HeadElf"])) {
         echo "<p>Please log in first.</p>";
     }
     ?>
+
+    <!-- Show form before the draw. -->
+    <?php if (isset($alreadyDrawn) && !$alreadyDrawn) { ?>
+        <!-- Exclusions and draw form. -->
+        <form method="POST" action="index.php?page=draw">
+            <hr>
+
+            <!-- Exclusion title. -->
+            <h3>🚫 Mark pairs that should NOT get each other (e.g. couples, family)</h3>
+
+            <?php
+            // Count accepted Elves.
+            $count = count($accepted ?? []);
+
+            // Create every possible pair.
+            for ($i = 0; $i < $count; $i++) {
+                for ($j = $i + 1; $j < $count; $j++) {
+                    // Get both Elves.
+                    $elf1 = $accepted[$i];
+                    $elf2 = $accepted[$j];
+
+                    // Create the pair value.
+                    $pairValue = $elf1["pk_elf"] . "-" . $elf2["pk_elf"];
+
+                    // Show the pair checkbox.
+                    echo "<label style='display:block; text-align:left;'>
+                            <input type='checkbox' name='DATA_exclusion[]' value='" . htmlspecialchars($pairValue, ENT_QUOTES, 'UTF-8') . "' style='width:auto; margin-right:8px;'>
+                            " . htmlspecialchars($elf1["firstName"], ENT_QUOTES, 'UTF-8') . " ↔ " . htmlspecialchars($elf2["firstName"], ENT_QUOTES, 'UTF-8') . "
+                          </label>";
+                }
+            }
+            ?>
+
+            <br>
+
+            <!-- Start the draw. -->
+            <input type="submit" name="BUTTON_Start" value="Start Draw" class="promo-submit">
+        </form>
+    <?php } ?>
 
     <!-- Page footer. -->
     <footer id="footerindex">© Wichtel-Website</footer>
