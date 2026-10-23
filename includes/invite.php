@@ -148,8 +148,8 @@ if (isset(
                     . $basePath;
                 $agreeLink = $baseUrl . "/index.php?page=agree&action=$actionId&elf=$elfId";
                 $disagreeLink = $baseUrl . "/index.php?page=disagree&action=$actionId&elf=$elfId";
-                $agreeImage = $baseUrl . "/img/agreebutton.png";
-                $disagreeImage = $baseUrl . "/img/disagreebutton.png";
+                $agreeImage = "https://desde661.foxi.lu/project/WIchtel-Website_1/img/agreebutton.png";
+                $disagreeImage = "https://desde661.foxi.lu/project/WIchtel-Website_1/img/disagreebutton.png";
 
                 // Escape values placed in the HTML email.
                 $safeFirstname = htmlspecialchars($firstname, ENT_QUOTES, 'UTF-8');

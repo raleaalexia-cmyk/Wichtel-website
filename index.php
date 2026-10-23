@@ -33,7 +33,7 @@ include_once __DIR__ . "/functions/function.php";
 
 // Load the selected website page.
 if($page == "home"){
-    include_once __DIR__ . "/includes/home.php";
+    include_once __DIR__ . "/includes/home.html";
 }else if($page == "action"){
     include_once __DIR__ . "/includes/action.php";
 }else if($page == "login"){
@@ -57,7 +57,7 @@ if($page == "home"){
 }else if($page == "userLogin"){
     include_once __DIR__ . "/includes/userLogin.php";
 }else{
-    include_once __DIR__ . "/includes/about.php";
+    include_once __DIR__ . "/includes/about.html";
 }
 
 // Load the website footer.
