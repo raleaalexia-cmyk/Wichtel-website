@@ -9,11 +9,13 @@ function f_connect($debugging)
     require_once __DIR__ . "/../credentials/credentials.php";
     // Create the database connection.
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PW, DB_NAME);
-    // Return an error if the connection fails.
+    // Return a safe error if the configured connection fails.
     if (!$dbc) {
         error_log('Wichtel database connection failed: ' . mysqli_connect_error());
-        exit('Database connection failed. Please check the database configuration.');
+        return false;
     }
+    // Set UTF-8 for data exchanged with MySQL.
+    mysqli_set_charset($dbc, 'utf8mb4');
     // Show a message when debugging is enabled.
     if ($debugging) {
         echo "Connected to db : " . DB_NAME . "<br>";
@@ -35,14 +37,15 @@ function emailSent($subject, $body, $email)
     $mail = new PHPMailer(true);
     // Use SMTP.
     $mail->isSMTP();
-    // Read the SMTP server from the host environment, defaulting to Gmail.
+    // SMTP server and credentials come from the PHP host's environment settings.
     $mail->Host = getenv('WICHTEL_SMTP_HOST') ?: 'smtp.gmail.com';
     // Enable SMTP login.
     $mail->SMTPAuth = true;
-    // Read SMTP credentials from environment variables instead of publishing secrets.
+    // Keep credentials out of the source repository.
     $mail->Username = getenv('WICHTEL_SMTP_USERNAME') ?: '';
     $mail->Password = getenv('WICHTEL_SMTP_PASSWORD') ?: '';
     if ($mail->Username === '' || $mail->Password === '') {
+        error_log('Wichtel SMTP is not configured.');
         return 'Email delivery is not configured on this server.';
     }
     // Use secure encryption.
@@ -62,11 +65,17 @@ function emailSent($subject, $body, $email)
     // Set the email body.
     $mail->Body = $body;
     // Send the email.
-    if ($mail->send()) {
-        return true;
+    try {
+        if ($mail->send()) {
+            return true;
+        }
+    } catch (\Throwable $exception) {
+        error_log('Wichtel email sending failed: ' . $exception->getMessage());
+        return "Email could not be sent.";
     }
-    // Return the sending error.
-    return "Fehler beim Senden: " . $mail->ErrorInfo;
+    // Return a generic sending error.
+    error_log("Wichtel email sending failed: " . $mail->ErrorInfo);
+    return "Email could not be sent.";
 }
 
 // Run an SQL query.
@@ -76,7 +85,8 @@ function InsertToDB($dbc, $query)
     $result = mysqli_query($dbc, $query);
     // Stop if the query fails.
     if (!$result) {
-        die("MySQL Error: " . mysqli_error($dbc) . " | Query: " . $query);
+        error_log("MySQL Error: " . mysqli_error($dbc));
+        die("A database query failed. Please check the server logs.");
     }
     // Return the query result.
     return $result;
@@ -90,7 +100,7 @@ function destroyLogin()
     // End the session.
     session_destroy();
     // Delete the email cookie.
-    setcookie("login_email", "", time() - 3600);
+    setcookie("login_email", "", time() - 3600, "/");
 }
 
 // Get a cookie value safely.
@@ -99,9 +109,9 @@ function cookieVal($cookieName)
     // Check if the cookie exists.
     if (isset($_COOKIE[$cookieName])) {
         // Return the protected value.
-        return htmlspecialchars($_COOKIE[$cookieName]);
+        return htmlspecialchars($_COOKIE[$cookieName], ENT_QUOTES, 'UTF-8');
     }
-    // Return empty text.
+    // Return empty text if missing.
     return "";
 }
 
