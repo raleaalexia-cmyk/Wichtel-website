@@ -53,19 +53,17 @@ if (isset(
     // Connect to the database.
     $dbc = f_connect(false);
 
-    // Escape the login values.
-    $emailDB = mysqli_real_escape_string($dbc, $email);
-    $codeDB = mysqli_real_escape_string($dbc, $code);
-
     // Search for a matching Head Elf.
-    // Head Elves log in with their email + the action's password, not a normal account.
+    // New actions store the code directly; the supplied SQL seed uses SHA-256 hashes.
     $query = "SELECT actionPassword
               FROM Action
-              WHERE email = '$emailDB'
-              AND actionPassword = '$codeDB'";
+              WHERE email = ?
+              AND (actionPassword = ? OR actionPassword = SHA2(?, 256))
+              LIMIT 1";
 
-    // Prepare the query.
+    // Prepare the query and bind the input values.
     $statement = mysqli_prepare($dbc, $query);
+    mysqli_stmt_bind_param($statement, "sss", $email, $code, $code);
 
     // Run the query.
     mysqli_stmt_execute($statement);
@@ -116,7 +114,7 @@ if (isset(
 
             // Check the entered password.
             // password_verify() compares the typed code against the stored hash.
-            if(password_verify($code, $row["password"])){
+            if(password_verify($code, $row["password"]) || hash_equals((string)$row["password"], hash("sha256", $code))){
                 // Save the Admin login.
                 $_SESSION["DATA_ADMIN"] = $row["userName"];
 
