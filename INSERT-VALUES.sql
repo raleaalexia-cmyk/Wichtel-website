@@ -1,4 +1,5 @@
 
+
 -- 50 elves
 INSERT INTO Elf (pk_elf, firstName, lastName, email, elfStatus) VALUES
 (1, 'Alex', 'Anderson', 'elf01@example.com', 'Active'),
@@ -168,6 +169,7 @@ INSERT INTO Draw (pkfk_action, pkfk_elf_gives, pkfk_elf_receives) VALUES
 (5, 50, 41);
 
 -- 50 linked user accounts
+
 INSERT INTO sys_User (pk_user, userName, password, role, fk_elf_registers) VALUES
 (1, 'elf01', SHA2('ElfPass01!', 256), 'Elf', 1),
 (2, 'elf02', SHA2('ElfPass02!', 256), 'Elf', 2),
@@ -219,3 +221,5 @@ INSERT INTO sys_User (pk_user, userName, password, role, fk_elf_registers) VALUE
 (48, 'elf48', SHA2('ElfPass48!', 256), 'Elf', 48),
 (49, 'elf49', SHA2('ElfPass49!', 256), 'Elf', 49),
 (50, 'elf50', SHA2('ElfPass50!', 256), 'Elf', 50);
+
+
